@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "settings.h": "c",
+        "*.tcc": "cpp",
+        "fstream": "cpp",
+        "sstream": "cpp"
+    }
+}
