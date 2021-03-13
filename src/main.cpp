@@ -49,6 +49,16 @@ void saveConfigCallback() {
 }
 
 void clearWiFiSettings(void *pvParameters) {
+  // Loop for 5 seconds before resetting. Because of the circuits physical
+  // proximity to the circuit box
+  for (int i = 0; i < 5; i++) {
+    if (digitalRead(RESET_PIN) == LOW) {
+      vTaskDelete(NULL);
+      return;
+    }
+    vTaskDelay(1000);
+  }
+
   Serial.println("Resetting WiFi");
   wifiManager.resetSettings();
   ESP.restart();
@@ -68,6 +78,7 @@ void fetchCurrent(void *pvParameters) {
     reading1.channel = "current_channel_1";
 
     xQueueSend(currentQueue, &reading1, 0);
+    vTaskDelay(1000);
 
     CurrentReading reading2;
     reading2.reading = readCurrentSensor(2);
